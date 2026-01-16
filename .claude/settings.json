@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install*)",
+      "Bash(npm run*)",
+      "Bash(npx create-vite*)",
+      "Bash(mkdir*)",
+      "Bash(cat*)",
+      "Read(*)",
+      "Write(src/**)",
+      "Write(public/**)",
+      "Write(*.config.*)",
+      "Write(package.json)",
+      "Write(tsconfig.json)",
+      "Write(index.html)"
+    ]
+  }
+}
