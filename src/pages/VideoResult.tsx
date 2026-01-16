@@ -85,13 +85,18 @@ export default function VideoResult() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="relative aspect-video max-h-[75vh] w-full bg-nexus-darker overflow-hidden"
           >
-            {/* Video iframe */}
-            <iframe
-              src="https://www.youtube.com/embed/djzOBZUFzTw?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist=djzOBZUFzTw"
-              title="VLA Robot Demo"
-              className="absolute inset-0 w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
+            {/* Video Player */}
+            <video
+              src={
+                ['pi0', 'gr00t'].includes(modelId)
+                  ? '/videos/pick_the_cube.mp4'
+                  : '/videos/Pick_the_orange.mp4'
+              }
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
             />
 
             {/* Scan lines overlay */}

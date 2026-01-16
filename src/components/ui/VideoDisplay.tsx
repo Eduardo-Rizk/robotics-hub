@@ -4,10 +4,12 @@ import { cn } from '@/lib/utils'
 
 interface VideoDisplayProps {
   className?: string
+  src?: string
 }
 
 export default function VideoDisplay({
   className,
+  src = '/videos/Pick_the_orange.mp4',
 }: VideoDisplayProps) {
   const [stats, setStats] = useState({
     fps: 60,
@@ -44,7 +46,7 @@ export default function VideoDisplay({
       {/* Video container */}
       <div className="aspect-video bg-nexus-darker relative">
         <video
-          src="/videos/demo.mp4"
+          src={src}
           autoPlay
           loop
           muted
