@@ -6,6 +6,7 @@ import Header from '@/components/layout/Header'
 import ModelSelection from '@/components/sections/ModelSelection'
 import SectorSelection from '@/components/sections/SectorSelection'
 import GlowButton from '@/components/ui/GlowButton'
+import { getModelById, getSectorById } from '@/lib/data'
 
 export default function Dashboard() {
   const navigate = useNavigate()
@@ -13,13 +14,15 @@ export default function Dashboard() {
   const [selectedSector, setSelectedSector] = useState<string | null>(null)
 
   const canProceed = selectedModel && selectedSector
+  const modelData = selectedModel ? getModelById(selectedModel) : null
+  const sectorData = selectedSector ? getSectorById(selectedSector) : null
 
   const handleFineTune = () => {
     if (!canProceed) return
     navigate('/processing', {
       state: {
-        model: selectedModel,
-        sector: selectedSector,
+        modelId: selectedModel,
+        sectorId: selectedSector,
         action: 'fine-tune',
       },
     })
@@ -124,7 +127,7 @@ export default function Dashboard() {
               </div>
 
               {/* Selection summary */}
-              {canProceed && (
+              {canProceed && modelData && sectorData && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -134,12 +137,12 @@ export default function Dashboard() {
                     Configuração selecionada
                   </p>
                   <div className="flex items-center justify-center gap-4 text-sm">
-                    <span className="text-nexus-gold font-mono capitalize">
-                      {selectedModel}
+                    <span className="text-nexus-gold font-mono">
+                      {modelData.name}
                     </span>
                     <span className="text-muted-foreground">→</span>
-                    <span className="text-nexus-amber font-mono capitalize">
-                      {selectedSector}
+                    <span className="text-nexus-amber font-mono">
+                      {sectorData.title}
                     </span>
                   </div>
                 </motion.div>

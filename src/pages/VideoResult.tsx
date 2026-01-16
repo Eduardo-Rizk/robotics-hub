@@ -2,6 +2,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, Share2, RotateCcw } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { getModelById, getSectorById } from '@/lib/data'
 
 export default function VideoResult() {
   const location = useLocation()
@@ -13,10 +14,13 @@ export default function VideoResult() {
     tasksCompleted: 0,
   })
 
-  const { model, sector } = (location.state as {
-    model: string
-    sector: string
-  }) || { model: 'gr00t', sector: 'manufacturing' }
+  const { modelId, sectorId } = (location.state as {
+    modelId: string
+    sectorId: string
+  }) || { modelId: 'gr00t', sectorId: 'manufacturing' }
+
+  const modelData = getModelById(modelId)
+  const sectorData = getSectorById(sectorId)
 
   // Simulate live stats
   useEffect(() => {
@@ -127,8 +131,8 @@ export default function VideoResult() {
                 <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-1">
                   Modelo Ativo
                 </p>
-                <p className="text-sm font-mono text-nexus-gold capitalize">
-                  {model}
+                <p className="text-sm font-mono text-nexus-gold">
+                  {modelData?.name || modelId}
                 </p>
               </div>
             </div>
@@ -174,15 +178,15 @@ export default function VideoResult() {
             {/* Model Info */}
             <InfoCard
               title="Modelo VLA"
-              value={model}
-              description="Vision-Language-Action model treinado para tarefas robóticas complexas"
+              value={modelData?.name || modelId}
+              description={`${modelData?.provider || 'Provider'} • ${modelData?.specs.params || ''} parâmetros`}
             />
 
             {/* Sector Info */}
             <InfoCard
               title="Setor Industrial"
-              value={sector}
-              description="Otimizado para operações específicas do setor selecionado"
+              value={sectorData?.title || sectorId}
+              description={sectorData?.subtitle || 'Otimizado para operações específicas'}
             />
 
             {/* Status */}

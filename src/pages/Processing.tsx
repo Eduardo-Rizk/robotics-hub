@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { CheckCircle2 } from 'lucide-react'
+import { getModelById, getSectorById } from '@/lib/data'
 
 const statusMessages = [
   'Inicializando sistemas...',
@@ -24,11 +25,14 @@ export default function Processing() {
   const [isComplete, setIsComplete] = useState(false)
   const hasNavigated = useRef(false)
 
-  const { model, sector, action } = (location.state as {
-    model: string
-    sector: string
+  const { modelId, sectorId, action } = (location.state as {
+    modelId: string
+    sectorId: string
     action: 'fine-tune' | 'deploy'
-  }) || { model: 'gr00t', sector: 'manufacturing', action: 'fine-tune' }
+  }) || { modelId: 'gr00t', sectorId: 'manufacturing', action: 'fine-tune' }
+
+  const modelData = getModelById(modelId)
+  const sectorData = getSectorById(sectorId)
 
   // Auto-navigate to video result when complete
   useEffect(() => {
@@ -36,12 +40,12 @@ export default function Processing() {
       hasNavigated.current = true
       const timer = setTimeout(() => {
         navigate('/result', {
-          state: { model, sector },
+          state: { modelId, sectorId },
         })
       }, 1500)
       return () => clearTimeout(timer)
     }
-  }, [isComplete, navigate, model, sector])
+  }, [isComplete, navigate, modelId, sectorId])
 
   useEffect(() => {
     const progressInterval = setInterval(() => {
@@ -95,12 +99,12 @@ export default function Processing() {
             <span className="text-xs font-mono text-muted-foreground uppercase tracking-wider">
               {action === 'fine-tune' ? 'Fine-Tuning' : 'Deploying'}:
             </span>
-            <span className="text-sm font-mono text-nexus-gold capitalize">
-              {model}
+            <span className="text-sm font-mono text-nexus-gold">
+              {modelData?.name || modelId}
             </span>
             <span className="text-muted-foreground">→</span>
-            <span className="text-sm font-mono text-nexus-amber capitalize">
-              {sector}
+            <span className="text-sm font-mono text-nexus-amber">
+              {sectorData?.title || sectorId}
             </span>
           </div>
 

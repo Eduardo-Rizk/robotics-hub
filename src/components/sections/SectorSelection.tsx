@@ -1,44 +1,6 @@
-import { Building2, Beef, Zap, Factory, Home } from 'lucide-react'
 import Section from '../layout/Section'
 import SectorCard from '../ui/SectorCard'
-
-const sectors = [
-  {
-    id: 'construction',
-    title: 'Construção Civil',
-    subtitle: 'Building the Future',
-    icon: Building2,
-    useCases: ['Inspeção', 'Montagem', 'Logística'],
-  },
-  {
-    id: 'agriculture',
-    title: 'Pecuária Bovina',
-    subtitle: 'Smart Agriculture',
-    icon: Beef,
-    useCases: ['Monitoramento', 'Alimentação', 'Saúde'],
-  },
-  {
-    id: 'energy',
-    title: 'Distribuição de Energia',
-    subtitle: 'Power Grid Intelligence',
-    icon: Zap,
-    useCases: ['Manutenção', 'Inspeção', 'Diagnóstico'],
-  },
-  {
-    id: 'manufacturing',
-    title: 'Indústria',
-    subtitle: 'Manufacturing 4.0',
-    icon: Factory,
-    useCases: ['Assembly', 'QC', 'Paletização'],
-  },
-  {
-    id: 'domestic',
-    title: 'Serviços Domésticos',
-    subtitle: 'Home Robotics',
-    icon: Home,
-    useCases: ['Limpeza', 'Organização', 'Assistência'],
-  },
-]
+import { sectors } from '@/lib/data'
 
 interface SectorSelectionProps {
   selectedSector: string | null
