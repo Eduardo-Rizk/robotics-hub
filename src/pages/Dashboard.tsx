@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Settings2, Rocket } from 'lucide-react'
+import { Rocket } from 'lucide-react'
 import Header from '@/components/layout/Header'
 import ModelSelection from '@/components/sections/ModelSelection'
 import SectorSelection from '@/components/sections/SectorSelection'
@@ -104,25 +104,15 @@ export default function Dashboard() {
               )}
 
               {/* Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <GlowButton
-                  variant="green"
-                  icon={Settings2}
-                  onClick={handleFineTune}
-                  disabled={!canProceed}
-                  className="flex-1 sm:flex-initial min-w-[200px]"
-                >
-                  Fine-Tune
-                </GlowButton>
-
+              <div className="flex justify-center">
                 <GlowButton
                   variant="gold"
                   icon={Rocket}
-                  disabled={true}
-                  className="flex-1 sm:flex-initial min-w-[200px] opacity-40"
+                  onClick={handleFineTune}
+                  disabled={!canProceed}
+                  className="min-w-[280px]"
                 >
-                  Deploy
-                  <span className="ml-2 text-[10px] opacity-60">(Em breve)</span>
+                  Fine-Tune & Deploy
                 </GlowButton>
               </div>
 

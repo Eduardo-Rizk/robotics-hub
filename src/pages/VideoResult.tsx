@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Download, Share2, RotateCcw } from 'lucide-react'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { getModelById, getSectorById } from '@/lib/data'
 
 export default function VideoResult() {
@@ -76,7 +76,7 @@ export default function VideoResult() {
 
       {/* Main Content */}
       <main className="pt-16">
-        {/* Video Section - Full Width */}
+        {/* Video Section 1 - Pick the Cube */}
         <div className="relative">
           {/* Video Container */}
           <motion.div
@@ -167,6 +167,13 @@ export default function VideoResult() {
             />
           </motion.div>
         </div>
+
+        {/* Video Section 2 - Fold T-Shirt */}
+        <YouTubeVideo
+          videoId="HSehmx0NZF4"
+          title="Fold T-Shirt Task"
+          modelName={modelData?.name || modelId}
+        />
 
         {/* Info Section */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -301,6 +308,220 @@ function CornerBracket({
     >
       <div className="absolute top-0 left-0 w-full h-[2px] bg-nexus-gold/60" />
       <div className="absolute top-0 left-0 w-[2px] h-full bg-nexus-gold/60" />
+    </div>
+  )
+}
+
+function ScrollPlayVideo({
+  src,
+  title,
+  modelName,
+}: {
+  src: string
+  title: string
+  modelName: string
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isPlaying, setIsPlaying] = useState(false)
+
+  useEffect(() => {
+    const video = videoRef.current
+    const container = containerRef.current
+    if (!video || !container) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            video.play()
+            setIsPlaying(true)
+          } else {
+            video.pause()
+            setIsPlaying(false)
+          }
+        })
+      },
+      { threshold: 0.5 }
+    )
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={containerRef} className="relative mt-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative aspect-video max-h-[75vh] w-full bg-nexus-darker overflow-hidden"
+      >
+        <video
+          ref={videoRef}
+          src={src}
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
+        {/* Scan lines overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
+            }}
+          />
+        </div>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-nexus-darker via-transparent to-nexus-darker/50" />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-nexus-darker/30 via-transparent to-nexus-darker/30" />
+
+        {/* Corner Brackets */}
+        <CornerBracket position="top-left" />
+        <CornerBracket position="top-right" />
+        <CornerBracket position="bottom-left" />
+        <CornerBracket position="bottom-right" />
+
+        {/* Top overlay - Play status */}
+        <div className="absolute top-6 left-6 flex items-center gap-4">
+          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${isPlaying ? 'bg-emerald-500/20 border border-emerald-500/30' : 'bg-gray-500/20 border border-gray-500/30'}`}>
+            <div className={`w-2 h-2 rounded-full ${isPlaying ? 'bg-emerald-500 animate-pulse' : 'bg-gray-500'}`} />
+            <span className={`text-xs font-mono uppercase tracking-wider ${isPlaying ? 'text-emerald-400' : 'text-gray-400'}`}>
+              {isPlaying ? 'Playing' : 'Paused'}
+            </span>
+          </div>
+        </div>
+
+        {/* Top overlay - Task info */}
+        <div className="absolute top-6 right-6">
+          <div className="px-4 py-2 rounded-lg bg-nexus-dark/80 backdrop-blur-sm border border-nexus-gold/20">
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-1">
+              {title}
+            </p>
+            <p className="text-sm font-mono text-nexus-gold">
+              {modelName}
+            </p>
+          </div>
+        </div>
+
+        {/* Scanner line */}
+        {isPlaying && (
+          <motion.div
+            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-nexus-emerald/60 to-transparent"
+            animate={{ top: ['0%', '100%'] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          />
+        )}
+      </motion.div>
+    </div>
+  )
+}
+
+function YouTubeVideo({
+  videoId,
+  title,
+  modelName,
+}: {
+  videoId: string
+  title: string
+  modelName: string
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setIsVisible(entry.isIntersecting)
+        })
+      },
+      { threshold: 0.3 }
+    )
+
+    observer.observe(container)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={containerRef} className="relative mt-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="relative aspect-video max-h-[75vh] w-full bg-nexus-darker overflow-hidden"
+      >
+        {/* YouTube iframe */}
+        <iframe
+          src={`https://www.youtube.com/embed/${videoId}?autoplay=${isVisible ? 1 : 0}&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist=${videoId}&modestbranding=1`}
+          title={title}
+          className="absolute inset-0 w-full h-full"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+
+        {/* Scan lines overlay */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage:
+                'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 4px)',
+            }}
+          />
+        </div>
+
+        {/* Gradient overlays */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-nexus-darker via-transparent to-nexus-darker/50" />
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-nexus-darker/30 via-transparent to-nexus-darker/30" />
+
+        {/* Corner Brackets */}
+        <CornerBracket position="top-left" />
+        <CornerBracket position="top-right" />
+        <CornerBracket position="bottom-left" />
+        <CornerBracket position="bottom-right" />
+
+        {/* Top overlay - Play status */}
+        <div className="absolute top-6 left-6 flex items-center gap-4">
+          <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full ${isVisible ? 'bg-emerald-500/20 border border-emerald-500/30' : 'bg-gray-500/20 border border-gray-500/30'}`}>
+            <div className={`w-2 h-2 rounded-full ${isVisible ? 'bg-emerald-500 animate-pulse' : 'bg-gray-500'}`} />
+            <span className={`text-xs font-mono uppercase tracking-wider ${isVisible ? 'text-emerald-400' : 'text-gray-400'}`}>
+              {isVisible ? 'Playing' : 'Paused'}
+            </span>
+          </div>
+        </div>
+
+        {/* Top overlay - Task info */}
+        <div className="absolute top-6 right-6">
+          <div className="px-4 py-2 rounded-lg bg-nexus-dark/80 backdrop-blur-sm border border-nexus-gold/20">
+            <p className="text-[10px] font-mono text-muted-foreground uppercase tracking-wider mb-1">
+              {title}
+            </p>
+            <p className="text-sm font-mono text-nexus-gold">
+              {modelName}
+            </p>
+          </div>
+        </div>
+
+        {/* Scanner line */}
+        {isVisible && (
+          <motion.div
+            className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-nexus-emerald/60 to-transparent"
+            animate={{ top: ['0%', '100%'] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+          />
+        )}
+      </motion.div>
     </div>
   )
 }
