@@ -3,12 +3,10 @@ import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 interface VideoDisplayProps {
-  videoUrl?: string
   className?: string
 }
 
 export default function VideoDisplay({
-  videoUrl = 'https://www.youtube.com/embed/djzOBZUFzTw?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&playlist=djzOBZUFzTw',
   className,
 }: VideoDisplayProps) {
   const [stats, setStats] = useState({
@@ -45,12 +43,13 @@ export default function VideoDisplay({
 
       {/* Video container */}
       <div className="aspect-video bg-nexus-darker relative">
-        <iframe
-          src={videoUrl}
-          title="Robot Demo"
-          className="absolute inset-0 w-full h-full"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
+        <video
+          src="/videos/demo.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
         />
 
         {/* Overlay gradient */}
