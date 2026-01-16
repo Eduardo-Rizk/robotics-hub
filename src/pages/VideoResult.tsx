@@ -87,11 +87,7 @@ export default function VideoResult() {
           >
             {/* Video Player */}
             <video
-              src={
-                ['pi0', 'gr00t'].includes(modelId)
-                  ? '/videos/pick_the_cube.mp4'
-                  : '/videos/Pick_the_orange.mp4'
-              }
+              src="/videos/pick_the_cube.mp4"
               autoPlay
               loop
               muted

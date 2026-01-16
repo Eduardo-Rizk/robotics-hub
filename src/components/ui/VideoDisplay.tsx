@@ -9,7 +9,7 @@ interface VideoDisplayProps {
 
 export default function VideoDisplay({
   className,
-  src = '/videos/Pick_the_orange.mp4',
+  src = '/videos/pick_the_cube.mp4',
 }: VideoDisplayProps) {
   const [stats, setStats] = useState({
     fps: 60,
