@@ -1,4 +1,4 @@
-import { Brain, Cpu, Sparkles, Code2, Building2, Beef, Zap, Factory, Home } from 'lucide-react'
+import { Brain, Cpu, Sparkles, Code2, Building2, Beef, Zap, Factory, Home, Play } from 'lucide-react'
 
 export const models = [
   {
@@ -37,11 +37,20 @@ export const models = [
 
 export const sectors = [
   {
+    id: 'demo',
+    title: 'DEMO',
+    subtitle: 'Demonstração',
+    icon: Play,
+    useCases: ['Teste', 'Visualização'],
+    disabled: false,
+  },
+  {
     id: 'construction',
     title: 'Construção Civil',
     subtitle: 'Building the Future',
     icon: Building2,
     useCases: ['Inspeção', 'Montagem', 'Logística'],
+    disabled: true,
   },
   {
     id: 'agriculture',
@@ -49,6 +58,7 @@ export const sectors = [
     subtitle: 'Smart Agriculture',
     icon: Beef,
     useCases: ['Monitoramento', 'Alimentação', 'Saúde'],
+    disabled: true,
   },
   {
     id: 'energy',
@@ -56,6 +66,7 @@ export const sectors = [
     subtitle: 'Power Grid Intelligence',
     icon: Zap,
     useCases: ['Manutenção', 'Inspeção', 'Diagnóstico'],
+    disabled: true,
   },
   {
     id: 'manufacturing',
@@ -63,6 +74,7 @@ export const sectors = [
     subtitle: 'Manufacturing 4.0',
     icon: Factory,
     useCases: ['Assembly', 'QC', 'Paletização'],
+    disabled: true,
   },
   {
     id: 'domestic',
@@ -70,6 +82,7 @@ export const sectors = [
     subtitle: 'Home Robotics',
     icon: Home,
     useCases: ['Limpeza', 'Organização', 'Assistência'],
+    disabled: true,
   },
 ]
 

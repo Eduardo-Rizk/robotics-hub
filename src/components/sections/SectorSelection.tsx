@@ -28,6 +28,7 @@ export default function SectorSelection({
             isSelected={selectedSector === sector.id}
             onClick={() => onSelectSector(sector.id)}
             index={index}
+            disabled={sector.disabled}
           />
         ))}
       </div>
